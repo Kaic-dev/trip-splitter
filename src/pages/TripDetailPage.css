@@ -1,0 +1,348 @@
+/* ------------------------------------------------------------------ */
+/* TRIP DETAIL PAGE                                                     */
+/* ------------------------------------------------------------------ */
+
+.trip-detail-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detail-loading {
+  text-align: center;
+  padding: 4rem;
+  color: #718096;
+}
+
+.detail-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.detail-header__info {
+  flex: 1;
+}
+
+.detail-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0.5rem 0 0.25rem 0;
+}
+
+.detail-date {
+  color: #718096;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.detail-stats-band {
+  display: flex;
+  gap: 1.5rem;
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.detail-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.detail-stat__icon { font-size: 1.5rem; }
+
+.detail-stat__value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.detail-stat__label {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .detail-columns { grid-template-columns: 1fr; }
+}
+
+.detail-card {
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+.detail-card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 1rem 0;
+}
+
+.detail-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.detail-card__header h2 { margin: 0; }
+
+/* ------------------------------------------------------------------ */
+/* PAYMENT LIST                                                         */
+/* ------------------------------------------------------------------ */
+
+.payment-detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.payment-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  gap: 0.5rem;
+}
+
+.payment-detail-row--paid {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+}
+
+.payment-detail-row--unpaid {
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+}
+
+.payment-detail-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.payment-detail-status { font-size: 1.25rem; }
+
+.payment-detail-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2d3748;
+}
+
+.payment-detail-meta {
+  display: block;
+  color: #a0aec0;
+  font-size: 0.75rem;
+}
+
+.payment-detail-amount {
+  font-weight: 700;
+  color: #2d3748;
+  font-size: 0.95rem;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+
+.payment-detail-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.btn--pdf-mini {
+  background: #ebf4ff;
+  color: #2b6cb0;
+  border: 1px solid #bee3f8;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------ */
+/* ROUTE SUMMARY                                                        */
+/* ------------------------------------------------------------------ */
+
+.route-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.route-stop {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  position: relative;
+  padding-bottom: 1.25rem;
+}
+
+.route-stop:last-child { padding-bottom: 0; }
+
+.route-stop::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 18px;
+  bottom: 0;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.route-stop:last-child::before { display: none; }
+
+.route-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #667eea;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px #667eea;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.route-dot--origin { background: #48bb78; box-shadow: 0 0 0 2px #48bb78; }
+.route-dot--destination { background: #f56565; box-shadow: 0 0 0 2px #f56565; }
+
+.route-stop__label { font-size: 0.7rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.05em; }
+.route-stop__name { font-size: 0.875rem; color: #2d3748; font-weight: 500; }
+
+/* ------------------------------------------------------------------ */
+/* SIMILAR TRIPS                                                        */
+/* ------------------------------------------------------------------ */
+
+.similar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.similar-item {
+  display: flex;
+  align-items: center;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid #edf2f7;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #4a5568;
+  transition: color 0.15s;
+}
+
+.similar-item:hover { color: #667eea; }
+.similar-item:last-child { border-bottom: none; }
+
+.similar-cost { margin-left: auto; font-weight: 600; }
+.similar-arrow { margin-left: 0.5rem; color: #cbd5e0; }
+
+.empty-note { color: #a0aec0; font-size: 0.875rem; }
+
+/* === Time Estimate Banner (Synced with ResultPage) === */
+.time-estimate-banner {
+  background: white;
+  border: 1.5px solid rgba(99, 179, 237, 0.3);
+  border-radius: 12px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.time-estimate-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-estimate-icon {
+  font-size: 1.25rem;
+}
+
+.time-estimate-label {
+  font-size: 0.7rem;
+  color: #a0aec0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.time-estimate-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1a202c;
+  line-height: 1.1;
+}
+
+.time-estimate-divider {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 60px;
+}
+
+.time-estimate-duration {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #3182ce;
+  background: #ebf8ff;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.time-estimate-line {
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+}
+
+.time-estimate-stops {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 0.65rem;
+  color: #718096;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.route-stop__eta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #3182ce;
+  background: #ebf8ff;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.route-stop__content {
+  flex: 1;
+}

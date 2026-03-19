@@ -1,0 +1,368 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ========================
+   Design Tokens
+======================== */
+:root {
+  /* Core Palette */
+  --primary: #6366f1; /* Indigo */
+  --primary-hover: #4f46e5;
+  --secondary: #64748b;
+  
+  /* Status */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+
+  /* Neutrals */
+  --bg-app: #f8fafc;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  
+  /* Glassmorphism & Effects */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  
+  /* Spacing & Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Safe Areas for Mobile */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ========================
+   Reset & Base
+   ======================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root, .app-container {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevents body scroll, allowing individual pages to manage it */
+}
+
+/* Layout Utilities for Mobile Scroll */
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: env(safe-area-bottom, 20px);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================
+   Layout Components
+   ======================== */
+.main-layout {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+
+.map-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.header-overlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 2000; /* Higher than BottomPanel (1000) */
+}
+
+.header-card {
+  pointer-events: auto;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*
+ * LAYOUT MODEL:
+ * - Mobile: position:fixed bottom sheet with translateY
+ * - Desktop (>= 1024px): position:static side panel (split layout)
+ */
+
+.desktop-split-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg-app);
+}
+
+.map-area {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.side-panel {
+  width: 420px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  box-shadow: -4px 0 24px rgba(0,0,0,0.05);
+  z-index: 30;
+  position: relative;
+}
+
+/* Adjust Header Overlay for Desktop */
+@media (min-width: 1024px) {
+  .header-overlay {
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
+  }
+}
+
+.bottom-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100dvh;
+  z-index: 1000;
+  background: var(--surface);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  box-shadow: 0 -10px 50px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  overflow: visible;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drag-handle-container {
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+  cursor: grab;
+}
+
+.drag-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+/* Wrapper around drag handle + header — never shrinks */
+.panel-top {
+  flex-shrink: 0;
+}
+
+.panel-header {
+  padding: 0 1.5rem 0.75rem 1.5rem;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-content {
+  /* CRITICAL: min-height:0 overrides flex's default min-height:auto. */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: visible; /* Important for dropdowns */
+  overscroll-behavior: contain;
+  padding: 1rem 1.5rem;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.panel-footer {
+  flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* ========================
+   UI Base
+   ======================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9375rem;
+}
+
+.btn--primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn--primary:active:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(1px);
+}
+
+.btn--secondary {
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+.btn--sm { padding: 0.5rem 0.75rem; font-size: 0.8125rem; }
+.btn-icon { width: 40px; height: 40px; padding: 0; border-radius: 50%; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.badge {
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.input-field:focus {
+  background: white;
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Animations */
+.animate-slide-up { animation: slideUp 0.3s ease-out; }
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-fade-in { animation: fadeIn 0.2s ease-out; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-scale { transition: transform 0.1s ease, opacity 0.1s ease; cursor: pointer; }
+.animate-scale:active { transform: scale(0.96); opacity: 0.8; }
+
+/* Skeletons */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #f8fafc 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Viewport & Safe Areas */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Global Currency Styling */
+.currency {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.currency-symbol {
+  font-size: 0.8em;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.currency-value {
+  font-weight: 700;
+}

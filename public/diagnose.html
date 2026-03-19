@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IDB Diagnostics</title>
+</head>
+<body>
+    <h1>IDB Diagnostics</h1>
+    <pre id="output"></pre>
+    <script>
+        const out = document.getElementById('output');
+        const log = (msg) => { out.textContent += msg + '\n'; console.log(msg); };
+
+        const request = indexedDB.open('TripSplitDB');
+        request.onerror = (event) => log("Database error: " + event.target.errorCode);
+        request.onsuccess = (event) => {
+            const db = event.target.result;
+            // Check stores
+            log("Stores: " + Array.from(db.objectStoreNames).join(', '));
+            
+            if (db.objectStoreNames.contains('tripHistory')) {
+                const transaction = db.transaction(['tripHistory'], 'readonly');
+                const objectStore = transaction.objectStore('tripHistory');
+                
+                log("--- All trips via getAll() ---");
+                const allReq = objectStore.getAll();
+                allReq.onsuccess = (e) => {
+                    const allTrips = e.target.result;
+                    log(`Total trips: ${allTrips.length}`);
+                    allTrips.forEach(t => {
+                        log(`\n--- TRIP [${t.tripType}] ${t.id} ---`);
+                        log(JSON.stringify(t, null, 2));
+                    });
+                };
+                
+                log("--- All trips via index by-date ---");
+                const idxReq = objectStore.index('by-date').getAll();
+                idxReq.onsuccess = (e) => {
+                    const idxTrips = e.target.result;
+                    log(`Total indexed trips: ${idxTrips.length}`);
+                }
+            } else {
+                log("tripHistory store not found.");
+            }
+        };
+    </script>
+</body>
+</html>

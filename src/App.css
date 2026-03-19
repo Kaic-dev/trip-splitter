@@ -1,0 +1,93 @@
+.app-layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================
+   Navbar
+======================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+  background: rgba(13, 17, 23, 0.85);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.navbar__logo {
+  font-size: 1.4rem;
+}
+
+.navbar__name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navbar__link {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.navbar__link:hover {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+.navbar__link--active {
+  color: var(--accent);
+  background: rgba(99, 179, 237, 0.08);
+}
+
+/* ========================
+   Main content area
+======================== */
+.app-main {
+  flex: 1;
+}
+
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+  /* Allow map interaction */
+}
+
+/* Enable interaction for UI overlays */
+.overlay-container>* {
+  pointer-events: auto;
+}
